@@ -1,0 +1,19 @@
+language: python
+python:
+    - "2.6"
+    - "2.7"
+    - "3.2"
+    - "3.3"
+    - "3.4"
+before_install:
+ - sudo apt-get update -qq
+ - sudo apt-get install -qq -y enchant
+install:
+    - pip install -rrequirements.txt
+    - pip install -rtest-requirements.txt
+    - pip install -e ./
+script:
+    - pep8 confpy/
+    - pyflakes confpy/
+    - pylint --rcfile=.pylintrc confpy/
+    - py.test tests/

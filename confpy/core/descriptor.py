@@ -5,8 +5,6 @@ from __future__ import absolute_import
 from __future__ import print_function
 from __future__ import unicode_literals
 
-import functools
-
 
 def is_descriptor(obj):
     """True if the object is a descriptor else False."""
@@ -15,60 +13,6 @@ def is_descriptor(obj):
         hasattr(obj, '__set__') or
         hasattr(obj, '__delete__')
     )
-
-
-class HybridMethod(object):
-
-    """Decorator to create combined classmethod and instancemethod."""
-
-    def __init__(self, method):
-        self._method = method
-
-    def __get__(self, obj=None, objtype=None):
-        @functools.wraps(self._method)
-        def wrapper(*args, **kwargs):
-            """Wrap the method and pass in cls or self."""
-            return self._method(obj or objtype, *args, **kwargs)
-        return wrapper
-
-
-class HybridProperty(object):
-
-    """Decorator to create combined class and instance property."""
-
-    def __init__(self, fget, fset=None, fdel=None, fdoc=None):
-        """Initialize the property as a stand-in for @property."""
-        self._fget = fget
-        self._fset = fset
-        self._fdel = fdel
-        self.__doc__ = fdoc or fget.__doc__
-
-    def __get__(self, obj=None, objtype=None):
-        return self._fget(obj or objtype)
-
-    def __set__(self, obj, value):
-        if not self._fset:
-
-            raise AttributeError("can't set attribute")
-
-        self._fset.__get__(obj, type(obj))(value)
-
-    def __delete__(self, obj):
-        if not self._fdel:
-
-            raise AttributeError("can't delete attribute")
-
-        self._fdel.__get__(obj, type(obj))()
-
-    def setter(self, func):
-        """Stand-in for @property.setter."""
-        self._fset = func
-        return self
-
-    def deleter(self, func):
-        """Stand-in for @property.deleter."""
-        self._fdel = func
-        return self
 
 
 class LateDescriptorBinding(object):

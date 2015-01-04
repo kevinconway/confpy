@@ -23,20 +23,6 @@ class TestDescriptor(object):
         self._value = False
 
 
-def test_hybrid_method():
-    """Test that HybridMethods work for both classes and instances."""
-    class T(object):
-
-        @descriptor.HybridMethod
-        def test(ref):
-            return ref
-
-    assert T.test() is T
-
-    instance = T()
-    assert instance.test() is instance
-
-
 def test_late_descriptor_binding():
     """Test that the LateDescriptorBinding base binds late descriptors."""
     test_value = object()

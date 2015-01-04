@@ -47,14 +47,11 @@ confidence=
 # --disable=W"
 
 # Disable F0401 to hide issues with Pylint importing modules
-# Disable E0213 to hide Pylint confusion of the self/cls argument when using
-# the HybridMethod decorator.
-# Disable E1003 to hide Pylint confusion of the super() call when used in a
-# HybridMethod.
 # Disable W0622 to hide Pylint complaints related to pycompat.
 # Disble R0201 to hide Pylint complaints related to default option coerce func.
 # Disable W0122 to hide Pylint complaints related to using exec in PythonFiles.
-disable=F0401,E0213,E1003,W0622,R0201,W0122
+# Disable E1101 to hide Pylint complains related to missing attr in pycompat.
+disable=F0401,W0622,R0201,W0122,E1101
 
 
 [MISCELLANEOUS]
@@ -131,7 +128,7 @@ generated-members=
 spelling-dict=en_US
 
 # List of comma separated words that should not be checked.
-spelling-ignore-words=config,namespace,iterable,json,ini,regex,namespaces,str,JSON,INI,init,confpy,behaviour,setattr,getattr,classmethod,instancemethod,dict,bool,metadata,iteritems,args,kwargs,cls,iter,subclass,subclasses,api,API,unicode
+spelling-ignore-words=config,namespace,iterable,json,ini,regex,namespaces,str,JSON,INI,init,confpy,behaviour,setattr,getattr,classmethod,instancemethod,dict,bool,metadata,iteritems,args,kwargs,cls,iter,subclass,subclasses,api,API,unicode,_namespaces,NAMESPACES,_NAMESPACES
 
 # A path to a file that contains private dictionary; one word per line.
 spelling-private-dict-file=

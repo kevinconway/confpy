@@ -13,7 +13,7 @@ install:
     - pip install -rtest-requirements.txt
     - pip install -e ./
 script:
-    - pep8 confpy/
-    - pyflakes confpy/
-    - pylint --rcfile=.pylintrc confpy/
+    - if [[ "$(python --version 2>&1)" =~ Python\ (2\.7.*|3\.[3-4].*) ]]; then pep8 confpy/; else echo "Skipping PEP8 for $(python --version 2>&1)."; fi
+    - if [[ "$(python --version 2>&1)" =~ Python\ (2\.7.*|3\.[3-4].*) ]]; then pyflakes confpy/; else echo "Skipping PyFlakes for $(python --version 2>&1)."; fi
+    - if [[ "$(python --version 2>&1)" =~ Python\ (2\.7.*|3\.[3-4].*) ]]; then pylint --rcfile=.pylintrc confpy/; else echo "Skipping PyLint for $(python --version 2>&1)."; fi
     - py.test tests/

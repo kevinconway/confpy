@@ -20,9 +20,10 @@ def conf_body():
     """Return a static configuration file body."""
     return """
 from confpy.core import config
-config.Configuration.test_python_loader.test = True
-config.Configuration.test_python_loader.many = 10
-config.Configuration.test_python_loader.letter = 'a'
+cfg = config.Configuration()
+cfg.test_python_loader.test = True
+cfg.test_python_loader.many = 10
+cfg.test_python_loader.letter = 'a'
 """
 
 

@@ -6,7 +6,6 @@ from __future__ import print_function
 from __future__ import unicode_literals
 
 from . import compat
-from . import descriptor
 from . import namespace as ns
 
 
@@ -14,15 +13,20 @@ class Configuration(object):
 
     """A configuration file.
 
-    All instances of this class modify a global dictionary which contains
-    all namespaces registered within a Python process.
+    Instances of this class act as a global singleton by sharing a dictionary
+    of values which is attached to the class. All subclasses will also express
+    this behaviour. However, if a subclass wishes to maintain a dictionary
+    separate from this parent it should overwrite the '_NAMESPACES' attribute
+    with a new class dictionary.
     """
 
+    _NAMESPACES = {}
+
     def __init__(self, **namespaces):
-        """Initialize a file with a series of namespaces.
+        """Initialize a configuration with a series of namespaces.
 
         Args:
-            **namespace: Each keyword should be a Namespace object which will
+            **namespaces: Each keyword should be a Namespace object which will
                 be added to the configuration file.
 
         Raises:
@@ -34,8 +38,7 @@ class Configuration(object):
 
             self.register(key, entry)
 
-    @descriptor.HybridMethod
-    def register(ref, name, namespace):
+    def register(self, name, namespace):
         """Register a new namespace with the Configuration object.
 
         Args:
@@ -46,42 +49,38 @@ class Configuration(object):
             TypeError: If the namespace is not a Namespace object.
             ValueError: If the namespace is already registered.
         """
-        if isinstance(ref, Configuration):
-
-            ref = type(ref)
-
         if not isinstance(namespace, ns.NameSpace):
 
             raise TypeError("Namespaces must be of type NameSpace.")
 
-        if hasattr(ref, name):
+        if hasattr(self, name):
 
             raise ValueError("NameSpace {0} already exists.".format(name))
 
-        setattr(ref, name, namespace)
+        self._NAMESPACES[name] = namespace
 
-    @descriptor.HybridMethod
-    def __setattr__(ref, name, value):
-        """Set all attributes as class attributes.
+    def namespaces(self):
+        """Get an iterable of two-tuples containing name and namespace.
 
-        To support using Configuration as a singleton, all attributes added to
-        instances are actually added to the class as class attributes.
+        The name in this case is the name given at registration time which is
+        used to identify a namespace and look it up on the object. The
+        namespace is the actual Namespace object.
         """
-        if isinstance(ref, Configuration):
+        return compat.iteritems(self._NAMESPACES)
 
-            ref = type(ref)
+    def __iter__(self):
+        """Proxy iter attempts to the 'namespaces' method."""
+        return self.namespaces()
 
-        return setattr(ref, name, value)
+    def __setattr__(self, name, value):
+        """Proxy all attribute sets to the 'register' method."""
+        self.register(name, value)
 
-    @descriptor.HybridMethod
-    def __delattr__(ref, name):
-        """Delete all attributes as class attributes.
+    def __getattr__(self, name):
+        """Lookup missing attributes in the _NAMESPACES dictionary."""
+        attr = self._NAMESPACES.get(name)
+        if not attr:
 
-        Similar to __setattr__, this method must look to the class for
-        attributes to remove rather than the instance.
-        """
-        if isinstance(ref, Configuration):
+            raise AttributeError("Namespace {0} does not exist.")
 
-            ref = type(ref)
-
-        return super(ref).__delattr__(name)
+        return attr

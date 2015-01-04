@@ -13,7 +13,7 @@ class MissingRequiredOption(ValueError):
 
 class NamespaceNotRegistered(AttributeError):
 
-    """Represents an attempt to set values in a non-existent NameSpace."""
+    """Represents an attempt to set values in a non-existent Namespace."""
 
 
 class OptionNotRegistered(AttributeError):

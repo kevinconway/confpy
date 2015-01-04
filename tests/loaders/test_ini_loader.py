@@ -41,7 +41,7 @@ def IniFile(conf_body):
 def test_ini_file_creates_config_objects(IniFile):
     """Test that parsing INI files loads options."""
     config.Configuration(
-        test_ini_loader=namespace.NameSpace(
+        test_ini_loader=namespace.Namespace(
             test=boolopt.BoolOption(),
             many=numopt.IntegerOption(),
             letter=stropt.StringOption(),

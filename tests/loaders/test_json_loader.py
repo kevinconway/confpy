@@ -44,7 +44,7 @@ def JsonFile(conf_body):
 def test_json_file_creates_config_objects(JsonFile):
     """Test that parsing JSON files loads options."""
     config.Configuration(
-        test_json_loader=namespace.NameSpace(
+        test_json_loader=namespace.Namespace(
             test=boolopt.BoolOption(),
             many=numopt.IntegerOption(),
             letter=stropt.StringOption(),

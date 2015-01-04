@@ -6,49 +6,141 @@ from __future__ import print_function
 from __future__ import unicode_literals
 
 from . import compat
-from . import descriptor
-from . import option
+# Renaming option to opt to allow option as a variable name.
+from . import option as opt
 
 
-class NameSpace(descriptor.LateDescriptorBinding):
+class Namespace(object):
 
     """A collection of configuration options."""
 
-    def __init__(self, description=None, **entries):
-        """Initalize the NameSpace with options
+    def __init__(self, description=None, **options):
+        """Initalize the Namespace with options
 
         Args:
             description (str, optional): A human readable description of what
-                the NameSpace contains.
-            **entries: Each keyword should be an Option object which will be
-                added to the NameSpace.
+                the Namespace contains.
+            **options: Each keyword should be an Option object which will be
+                added to the Namespace.
 
         Raises:
             TypeError: If an entry is not an Option object.
         """
-        super(NameSpace, self).__init__()
         self.__doc__ = description
-        for key, entry in compat.iteritems(entries):
+        self._options = {}
+        for name, option in compat.iteritems(options):
 
-            if not isinstance(entry, option.Option):
+            self.register(name, option)
 
-                raise TypeError("Entries must be an Option object.")
-
-            setattr(self, key, entry)
+        super(Namespace, self).__init__()
 
     @property
     def description(self):
         """Get the description of what the namespace contains."""
         return self.__doc__
 
-    def __get__(self, obj=None, objtype=None):
-        """Return self as the __get__ value."""
-        return self
+    def get(self, name, default=None):
+        """Fetch an option from the dictionary.
 
-    def __set__(self, obj, value):
-        """Prevent overwriting of NameSpace objects."""
-        raise AttributeError("Attempted to overwrite a NameSpace.")
+        Args:
+            name (str): The name of the option.
+            default: The value to return if the name is missing.
 
-    def __delete__(self, obj):
-        """Prevent deleting of NameSpace objects."""
-        raise AttributeError("Attempted to delete a NameSpace.")
+        Returns:
+            any: The value stored by the option.
+
+        This method resolves the option to its value rather than returning
+        the option object itself. Use the 'options()' method or this object's
+        iter to get the raw options.
+        """
+        option = self._options.get(name, default)
+        return option.__get__(self)
+
+    def set(self, name, value):
+        """Set an option value.
+
+        Args:
+            name (str): The name of the option.
+            value: The value to set the option to.
+
+        Raises:
+            AttributeError: If the name is not registered.
+            TypeError: If the value is not a string or appropriate native type.
+            ValueError: If the value is a string but cannot be coerced.
+        """
+        if name not in self._options:
+
+            raise AttributeError("Option {0} does not exist.".format(name))
+
+        return self._options[name].__set__(self, value)
+
+    def register(self, name, option):
+        """Register a new option with the namespace.
+
+        Args:
+            name (str): The name to register the option under.
+            option (option.Option): The option object to register.
+
+        Raises:
+            TypeError: If the option is not an option.Option object.
+            ValueError: If the name is already registered.
+        """
+        if name in self._options:
+
+            raise ValueError("Option {0} already exists.".format(name))
+
+        if not isinstance(option, opt.Option):
+
+            raise TypeError("Options must be of type Option.")
+
+        self._options[name] = option
+
+    def options(self):
+        """Get an iterable of two-tuples containing name and option.
+
+        The name in this case is the name given at registration time which is
+        used to identify an option and look it up on the object. The
+        option is the actual Option object.
+        """
+        return compat.iteritems(self._options)
+
+    def __iter__(self):
+        """Proxy iter attempts to the 'options' method."""
+        return self.options()
+
+    def __setattr__(self, name, value):
+        """Proxy attribute sets to the 'register' method if needed.
+
+        If the value is an option object this call gets proxied to 'register'.
+        If the value is anything else this method will follow the standard
+        setattr behaviour unless the target is an option in which case the
+        method is proxied to 'set'.
+        """
+        if isinstance(value, opt.Option):
+
+            return self.register(name, value)
+
+        if not hasattr(self, name):
+
+            return object.__setattr__(self, name, value)
+
+        # The options dictionary may not be set yet if this is getting called
+        # from the init method. Check for the attribute before accessing it to
+        # avoid infinite recursion.
+        if hasattr(self, '_options') and name in self._options:
+
+            return self.set(name, value)
+
+        return object.__setattr__(self, name, value)
+
+    def __getattr__(self, name):
+        """Lookup missing attributes in the options dictionary."""
+        # PY3 'hasattr' behaviour changed to utilize the 'getattr' which causes
+        # infinite recursion if it is used before the options dictionary is
+        # created. Lookup up the attribute directly in the instance dictionary
+        # here to avoid that scenario.
+        if '_options' not in self.__dict__ or name not in self._options:
+
+            raise AttributeError("Option {0} does not exist.".format(name))
+
+        return self.get(name)

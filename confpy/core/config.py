@@ -38,6 +38,18 @@ class Configuration(object):
 
             self.register(key, entry)
 
+    def get(self, name, default=None):
+        """Fetch a namespace from the dictionary.
+
+        Args:
+            name (str): The name of the section/namespace.
+            default: The value to return if the name is missing.
+
+        Returns:
+            namespace.Namespace: The namespace registered under the given name.
+        """
+        return self._NAMESPACES.get(name, default)
+
     def register(self, name, namespace):
         """Register a new namespace with the Configuration object.
 
@@ -49,13 +61,13 @@ class Configuration(object):
             TypeError: If the namespace is not a Namespace object.
             ValueError: If the namespace is already registered.
         """
+        if name in self._NAMESPACES:
+
+            raise ValueError("Namespace {0} already exists.".format(name))
+
         if not isinstance(namespace, ns.Namespace):
 
             raise TypeError("Namespaces must be of type Namespace.")
-
-        if hasattr(self, name):
-
-            raise ValueError("Namespace {0} already exists.".format(name))
 
         self._NAMESPACES[name] = namespace
 
@@ -78,9 +90,9 @@ class Configuration(object):
 
     def __getattr__(self, name):
         """Lookup missing attributes in the _NAMESPACES dictionary."""
-        attr = self._NAMESPACES.get(name)
+        attr = self.get(name)
         if not attr:
 
-            raise AttributeError("Namespace {0} does not exist.")
+            raise AttributeError("Namespace {0} does not exist.".format(name))
 
         return attr

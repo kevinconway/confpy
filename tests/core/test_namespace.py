@@ -11,7 +11,7 @@ from confpy.options import boolopt
 
 def test_namespace_descriptor_binding():
     """Test that option descriptors are bound to a namespace on init."""
-    ns = namespace.NameSpace(
+    ns = namespace.Namespace(
         test=boolopt.BoolOption(),
     )
     assert ns.test is None

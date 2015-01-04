@@ -13,7 +13,7 @@ from confpy.core import namespace
 
 def test_config_instance_namespace_setting():
     """Test that namespaces are bound to a config on init."""
-    ns = namespace.NameSpace(description="test")
+    ns = namespace.Namespace(description="test")
     conf = config.Configuration(
         test=ns,
     )
@@ -24,7 +24,8 @@ def test_config_instance_namespace_setting():
 
 def test_config_subclasses_are_not_affected_by_parent():
     """Test that Configuration subclasses to not recieve parent namespaces."""
-    ns = namespace.NameSpace(description="modified")
+    ns = namespace.Namespace(description="modified")
+
     class TestConfiguration(config.Configuration):
         _NAMESPACES = {}
 

@@ -56,13 +56,13 @@ def py_file(config_path):
 def test_parse_files(ini_file, json_file, py_file):
     """Test that files can be loaded from path."""
     config.Configuration(
-        test_ini_parse=namespace.NameSpace(
+        test_ini_parse=namespace.Namespace(
             ini_loaded=boolopt.BoolOption(),
         ),
-        test_json_parse=namespace.NameSpace(
+        test_json_parse=namespace.Namespace(
             json_loaded=boolopt.BoolOption(),
         ),
-        test_python_parse=namespace.NameSpace(
+        test_python_parse=namespace.Namespace(
             python_loaded=boolopt.BoolOption(),
         ),
     )

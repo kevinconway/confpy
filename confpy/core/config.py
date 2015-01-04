@@ -49,13 +49,13 @@ class Configuration(object):
             TypeError: If the namespace is not a Namespace object.
             ValueError: If the namespace is already registered.
         """
-        if not isinstance(namespace, ns.NameSpace):
+        if not isinstance(namespace, ns.Namespace):
 
-            raise TypeError("Namespaces must be of type NameSpace.")
+            raise TypeError("Namespaces must be of type Namespace.")
 
         if hasattr(self, name):
 
-            raise ValueError("NameSpace {0} already exists.".format(name))
+            raise ValueError("Namespace {0} already exists.".format(name))
 
         self._NAMESPACES[name] = namespace
 

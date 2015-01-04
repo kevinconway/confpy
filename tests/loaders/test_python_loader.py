@@ -42,7 +42,7 @@ def PythonFile(conf_body):
 def test_python_file_creates_config_objects(PythonFile):
     """Test that execing Python files loads options."""
     config.Configuration(
-        test_python_loader=namespace.NameSpace(
+        test_python_loader=namespace.Namespace(
             test=boolopt.BoolOption(),
             many=numopt.IntegerOption(),
             letter=stropt.StringOption(),

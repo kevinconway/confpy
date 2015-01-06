@@ -1,0 +1,5 @@
+{
+{% for section_name, section in config|sort(attribute='0') %}   "{{ section_name }}": {
+{% for option_name, option in section|sort(attribute='0') %}        "{{ option_name }}": {% if option.value is none %}null{% else %}"{{ option.value }}"{% endif %}{% if not loop.last %},{% endif %}
+{% endfor %}    }{% if not loop.last %},{% endif %}
+{% endfor %}}

@@ -18,7 +18,7 @@ with open('LICENSE', 'r') as licensefile:
 
 setup(
     name='confpy',
-    version='0.3.0',
+    version='0.4.0',
     url='https://github.com/kevinconway/confpy',
     description='Config file parsing and option management.',
     author="Kevin Conway",
@@ -28,6 +28,9 @@ setup(
     packages=find_packages(exclude=['tests', 'build', 'dist', 'docs']),
     requires=REQUIREMENTS,
     entry_points={
-        'console_scripts': [],
+        'console_scripts': [
+            'confpy-generate = confpy.cmd:generate_example',
+        ],
     },
+    include_package_data=True,
 )

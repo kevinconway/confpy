@@ -78,7 +78,7 @@ class Configuration(object):
         used to identify a namespace and look it up on the object. The
         namespace is the actual Namespace object.
         """
-        return compat.iteritems(self._NAMESPACES)
+        return iter(compat.iteritems(self._NAMESPACES))
 
     def __iter__(self):
         """Proxy iter attempts to the 'namespaces' method."""

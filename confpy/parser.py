@@ -18,7 +18,7 @@ FILE_TYPES = {
 }
 
 
-def get_config(path):
+def configfile_from_path(path):
     """Get a ConfigFile object based on a file path.
 
     This method will inspect the file extension and return the appropriate
@@ -48,6 +48,60 @@ def get_config(path):
     return conf_type(path=path)
 
 
+def configuration_from_paths(paths):
+    """Get a Configuration object based on multiple file paths.
+
+    Args:
+        paths (iter of str): An iterable of file paths which identify config
+            files on the system.
+
+    Returns:
+        confpy.core.config.Configuration: The loaded configuration object.
+
+    Raises:
+        NamespaceNotRegistered: If a file contains a namespace which is not
+            defined.
+        OptionNotRegistered: If a file contains an option which is not defined
+            but resides under a valid namespace.
+        UnrecognizedFileExtension: If there is no loader for a path.
+    """
+    for path in paths:
+
+        cfg = configfile_from_path(path).config
+
+    return cfg
+
+
+def check_for_missing_options(config):
+    """Iter over a config and raise if a required option is still not set.
+
+    Args:
+        config (confpy.core.config.Configuration): The configuration object
+            to validate.
+
+    Raises:
+        MissingRequiredOption: If any required options are not set in the
+            configuration object.
+
+    Required options with default values are considered set and will not cause
+    this function to raise.
+    """
+    for section_name, section in config:
+
+        for option_name, option in section:
+
+            if option.required and option.value is None:
+
+                raise exc.MissingRequiredOption(
+                    "Option {0} in namespace {1} is required.".format(
+                        option_name,
+                        section_name,
+                    )
+                )
+
+    return config
+
+
 def parse_files(files):
     """Parse a list of files in order and return a configuration object.
 
@@ -65,8 +119,4 @@ def parse_files(files):
             but resides under a valid namespace.
         UnrecognizedFileExtension: If there is no loader for a path.
     """
-    for config_file in files:
-
-        cfg = get_config(path=config_file).config
-
-    return cfg
+    return check_for_missing_options(configuration_from_paths(files))

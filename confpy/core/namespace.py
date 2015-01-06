@@ -106,7 +106,7 @@ class Namespace(object):
 
     def __iter__(self):
         """Proxy iter attempts to the 'options' method."""
-        return self.options()
+        return iter(self.options())
 
     def __setattr__(self, name, value):
         """Proxy attribute sets to the 'register' method if needed.

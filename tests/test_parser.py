@@ -67,8 +67,22 @@ def test_parse_files(ini_file, json_file, py_file):
         ),
     )
 
-    cfg = parser.parse_files(files=(ini_file, json_file, py_file))
+    cfg = parser.parse_options(files=(ini_file, json_file, py_file))
 
     assert cfg.test_ini_parse.ini_loaded is True
     assert cfg.test_json_parse.json_loaded is True
     assert cfg.test_python_parse.python_loaded is True
+
+
+def test_parse_env(ini_file, json_file, py_file):
+    """Test that files can be loaded from path."""
+    cfg = config.Configuration(
+        test_env_parse=namespace.Namespace(
+            env_loaded=boolopt.BoolOption(),
+        ),
+    )
+
+    os.environ['CONFPY_TEST_ENV_PARSE_ENV_LOADED'] = 'TRUE'
+    cfg = parser.set_environment_var_options(config=cfg)
+
+    assert cfg.test_env_parse.env_loaded is True

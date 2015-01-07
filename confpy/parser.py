@@ -5,6 +5,8 @@ from __future__ import absolute_import
 from __future__ import print_function
 from __future__ import unicode_literals
 
+import os
+
 from . import exc
 from .loaders import ini
 from .loaders import json
@@ -72,6 +74,45 @@ def configuration_from_paths(paths):
     return cfg
 
 
+def set_environment_var_options(config, env=None, prefix='CONFPY'):
+    """Set any configuration options which have an environment var set.
+
+    Args:
+        config (confpy.core.config.Configuration): A configuration object which
+            has been initialized with options.
+        env (dict): Optional dictionary which contains environment variables.
+            The default is os.environ if no value is given.
+        prefix (str): The string prefix prepended to all environment variables.
+            This value will be set to upper case. The default is CONFPY.
+
+    Returns:
+        confpy.core.config.Configuration: A configuration object with
+            environment variables set.
+
+    The pattern to follow when setting environment variables is:
+
+        <PREFIX>_<SECTION>_<OPTION>
+
+    Each value should be upper case and separated by underscores.
+    """
+    env = env or os.environ
+    for section_name, section in config:
+
+        for option_name, _ in section:
+
+            var_name = (
+                prefix.upper() + '_' +
+                section_name.upper() + '_' +
+                option_name.upper()
+            )
+            env_var = env.get(var_name)
+            if env_var:
+
+                setattr(section, option_name, env_var)
+
+    return config
+
+
 def check_for_missing_options(config):
     """Iter over a config and raise if a required option is still not set.
 
@@ -102,11 +143,15 @@ def check_for_missing_options(config):
     return config
 
 
-def parse_files(files):
-    """Parse a list of files in order and return a configuration object.
+def parse_options(files, env_prefix='CONFPY'):
+    """Parse configuration options and return a configuration object.
 
     Args:
         files (iter of str): File paths which identify configuration files.
+            These files are processed in order with values in later files
+            overwriting values in earlier files.
+        env_prefix (str): The static prefix prepended to all options when set
+            as environment variables. The default is CONFPY.
 
     Returns:
         confpy.core.config.Configuration: The loaded configuration object.
@@ -119,4 +164,11 @@ def parse_files(files):
             but resides under a valid namespace.
         UnrecognizedFileExtension: If there is no loader for a path.
     """
-    return check_for_missing_options(configuration_from_paths(files))
+    return check_for_missing_options(
+        config=set_environment_var_options(
+            config=configuration_from_paths(
+                paths=files,
+            ),
+            prefix=env_prefix,
+        ),
+    )

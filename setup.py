@@ -18,7 +18,7 @@ with open('LICENSE', 'r') as licensefile:
 
 setup(
     name='confpy',
-    version='0.7.0',
+    version='0.7.1',
     url='https://github.com/kevinconway/confpy',
     description='Config file parsing and option management.',
     author="Kevin Conway",

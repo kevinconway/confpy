@@ -17,7 +17,7 @@ Defining Configuration Options
 
     cfg = Configuration(
         http_options=Namespace(
-            description="Options related to HTTP function.",
+            description="Options related to HTTP functions.",
             endpoint=StringOption(
                 description="The HTTP endpoint to fetch.",
                 default="https://some-api.com",
@@ -114,18 +114,22 @@ Example CLI Flag:
 
 .. code-block:: shell
 
-    some_executable --http_options_endpont="https://some-other-api.com"
+    some_executable --http_options_endpoint="https://some-other-api.com"
 
 All of the above examples set the same option to the same value. Any
-combination of these may be used to set or override options. The precedence
-order by loading values is files first (in the order they are parsed),
-environment variables second, and CLI flags last.
+combination of these may be used to set or overwrite options. The option parser
+will follow a simple pattern for setting and overwrite option values.
+Configuration files are parsed first with later files overwriting values from
+earlier files. Environment variables are parsed next and can overwrite any
+values set by configuration files. CLI flags are parsed last and can overwrite
+any value set.
 
 In order to bring these values into your Python process you need to add a line
-in your "main" (or equivalent) method. As it was stated above, the definitions
-must be loaded before all other project logic. In between loading the
-configuration definitions and other project code you must also make a call to
-parse the configuration values set. For example:
+in your "main" (or equivalent) method which imports your configuration
+definition and another line which parses and loads the option values. As stated
+above, the importing of configuration definitions must happen before all other
+code logic. After the definitions are loaded, but before any other project
+code, the option values must also be parsed and loaded. For example:
 
 .. code-block:: python
 
@@ -152,7 +156,7 @@ Values from configuration files are automatically converted to the appropriate
 Python type based on the option object used in the configuration definition.
 The currently available types are:
 
--   BooleanOption(description=None, required=False, default=None)
+-   BoolOption(description=None, required=False, default=None)
 
     An option which represents a True or False value. The text values of
     'yes', 'true', and '1' are converted to True. The text values of 'no',
@@ -206,7 +210,29 @@ Multiple '--module' and '--file' flags may be added to load additional
 configuration definitions before generating the sample. Module should be
 importable on the Python path while files must be paths for which the current
 user has read permissions. By default the generator will create a JSON file.
-Use the '--format' flag to override this behaviour.
+Use the '--format' flag to override this behaviour. Our running example would
+generate the following:
+
+::
+
+    confpy-generate --module="myproject.conf"
+    {
+        "http_options": {
+            "endpoint": "https://some-api.com"
+        }
+    }
+
+    confpy-generate --module="myproject.conf" --format="INI"
+    # Options related to HTTP functions.
+    [http_options]
+    endpoint = "https://some-api.com" # The HTTP endpoint to fetch.
+
+While developing, it may be easier to use the file path rather than the module
+path if your file is not installed on the Python path.
+
+::
+
+    confpy-generate --file ./my_project/conf.py
 
 Testing
 =======

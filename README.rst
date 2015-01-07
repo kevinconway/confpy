@@ -104,6 +104,13 @@ Example Env Var:
     # Note: The CONFPY prefix is configurable.
     export CONFPY_MY_OPTIONS_HTTP_ENDPOINT="https://some-other-api.com"
 
+
+Example CLI Flag:
+
+.. code-block:: shell
+
+    some_executable --my_options_http_endpont="https://some-other-api.com"
+
 Each of the above files accomplishes the same thing. Any format can be used. In
 order to load these files and set the values they must be parsed using the
 'confpy.parser.parse_options' helper. This should be run after option

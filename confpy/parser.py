@@ -5,7 +5,9 @@ from __future__ import absolute_import
 from __future__ import print_function
 from __future__ import unicode_literals
 
+import argparse
 import os
+import sys
 
 from . import exc
 from .loaders import ini
@@ -100,15 +102,64 @@ def set_environment_var_options(config, env=None, prefix='CONFPY'):
 
         for option_name, _ in section:
 
-            var_name = (
-                prefix.upper() + '_' +
-                section_name.upper() + '_' +
-                option_name.upper()
+            var_name = '{0}_{1}_{2}'.format(
+                prefix.upper(),
+                section_name.upper(),
+                option_name.upper(),
             )
             env_var = env.get(var_name)
             if env_var:
 
                 setattr(section, option_name, env_var)
+
+    return config
+
+
+def set_cli_options(config, arguments=None):
+    """Set any configuration options which have a CLI value set.
+
+    Args:
+        config (confpy.core.config.Configuration): A configuration object which
+            has been initialized with options.
+        arguments (iter of str): An iterable of strings which contains the CLI
+            arguments passed. If nothing is give then sys.argv is used.
+
+    Returns:
+        confpy.core.config.Configuration: A configuration object with CLI
+            values set.
+
+    The pattern to follow when setting CLI values is:
+
+        <section>_<option>
+
+    Each value should be lower case and separated by underscores.
+    """
+    arguments = arguments or sys.argv[1:]
+    parser = argparse.ArgumentParser()
+    for section_name, section in config:
+
+        for option_name, _ in section:
+
+            var_name = '{0}_{1}'.format(
+                section_name.lower(),
+                option_name.lower(),
+            )
+            parser.add_argument('--{0}'.format(var_name))
+
+    args, _ = parser.parse_known_args(arguments)
+    args = vars(args)
+    for section_name, section in config:
+
+        for option_name, _ in section:
+
+            var_name = '{0}_{1}'.format(
+                section_name.lower(),
+                option_name.lower(),
+            )
+            value = args.get(var_name)
+            if value:
+
+                setattr(section, option_name, value)
 
     return config
 
@@ -165,10 +216,12 @@ def parse_options(files, env_prefix='CONFPY'):
         UnrecognizedFileExtension: If there is no loader for a path.
     """
     return check_for_missing_options(
-        config=set_environment_var_options(
-            config=configuration_from_paths(
-                paths=files,
+        config=set_cli_options(
+            config=set_environment_var_options(
+                config=configuration_from_paths(
+                    paths=files,
+                ),
+                prefix=env_prefix,
             ),
-            prefix=env_prefix,
-        ),
+        )
     )

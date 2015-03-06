@@ -19,3 +19,18 @@ def test_namespace_descriptor_binding():
     assert ns.test is True
     ns.test = 'no'
     assert ns.test is False
+
+
+def test_namespace_auto_generate():
+    """Test if AutoNamespace can generate new options dynamically."""
+    ns = namespace.AutoNamespace(
+        type=boolopt.BoolOption,
+        test_1=boolopt.BoolOption(),
+    )
+    assert ns.test_1 is None
+    ns.test_1 = True
+    assert ns.test_1 is True
+    ns.test_2 = False
+    assert ns.test_2 is False
+    assert 'test_2' in ns._options
+    assert hasattr(ns._options['test_2'], '__get__')

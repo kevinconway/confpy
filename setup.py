@@ -10,7 +10,7 @@ with open('README.rst', 'r') as readmefile:
 
 setup(
     name='confpy',
-    version='0.9.3',
+    version='0.10.0',
     url='https://github.com/kevinconway/confpy',
     description='Config file parsing and option management.',
     author="Kevin Conway",

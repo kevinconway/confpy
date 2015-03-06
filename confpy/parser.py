@@ -22,7 +22,7 @@ FILE_TYPES = {
 }
 
 
-def configfile_from_path(path):
+def configfile_from_path(path, strict=True):
     """Get a ConfigFile object based on a file path.
 
     This method will inspect the file extension and return the appropriate
@@ -30,6 +30,7 @@ def configfile_from_path(path):
 
     Args:
         path (str): The file path which represents the configuration file.
+        strict (bool): Whether or not to parse the file in strict mode.
 
     Returns:
         confpy.loaders.base.ConfigurationFile: The subclass which is
@@ -49,15 +50,16 @@ def configfile_from_path(path):
             )
         )
 
-    return conf_type(path=path)
+    return conf_type(path=path, strict=strict)
 
 
-def configuration_from_paths(paths):
+def configuration_from_paths(paths, strict=True):
     """Get a Configuration object based on multiple file paths.
 
     Args:
         paths (iter of str): An iterable of file paths which identify config
             files on the system.
+        strict (bool): Whether or not to parse the files in strict mode.
 
     Returns:
         confpy.core.config.Configuration: The loaded configuration object.
@@ -71,7 +73,7 @@ def configuration_from_paths(paths):
     """
     for path in paths:
 
-        cfg = configfile_from_path(path).config
+        cfg = configfile_from_path(path, strict=strict).config
 
     return cfg
 
@@ -194,7 +196,7 @@ def check_for_missing_options(config):
     return config
 
 
-def parse_options(files, env_prefix='CONFPY'):
+def parse_options(files, env_prefix='CONFPY', strict=True):
     """Parse configuration options and return a configuration object.
 
     Args:
@@ -203,6 +205,7 @@ def parse_options(files, env_prefix='CONFPY'):
             overwriting values in earlier files.
         env_prefix (str): The static prefix prepended to all options when set
             as environment variables. The default is CONFPY.
+        strict (bool): Whether or not to parse the files in strict mode.
 
     Returns:
         confpy.core.config.Configuration: The loaded configuration object.
@@ -220,6 +223,7 @@ def parse_options(files, env_prefix='CONFPY'):
             config=set_environment_var_options(
                 config=configuration_from_paths(
                     paths=files,
+                    strict=strict,
                 ),
                 prefix=env_prefix,
             ),

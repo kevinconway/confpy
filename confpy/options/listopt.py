@@ -28,16 +28,17 @@ class ListOption(opt.Option):
             TypeError: If the given option is not an instance of option.Option.
             TypeError: If the default value is set but not an iterable.
         """
+        super(ListOption, self).__init__(*args, **kwargs)
         if not isinstance(option, opt.Option):
 
             raise TypeError("Option must be an option type.")
 
+        self._option = option
+        self._default = default
+
         if default is not None:
 
             self._value = self.coerce(default)
-
-        self._option = option
-        super(ListOption, self).__init__(*args, **kwargs)
 
     def coerce(self, values):
         """Convert an iterable of literals to an iterable of options.
@@ -88,6 +89,6 @@ class ListOption(opt.Option):
         value = self._value
         if not self.required and self._value is None:
 
-            value = self.default
+            value = self.coerce(self._default)
 
         return (val.__get__(None, None) for val in value)

@@ -35,3 +35,17 @@ def test_list_string_coerce():
     assert result[1] is False
     assert result[2] is True
     assert result[3] is False
+
+
+def test_list_default():
+    """Test if default values are registered with a list option."""
+    opt = listopt.ListOption(
+        option=boolopt.BoolOption(),
+        default='true,false,yes,no',
+    )
+
+    result = tuple(opt.__get__())
+    assert result[0] is True
+    assert result[1] is False
+    assert result[2] is True
+    assert result[3] is False

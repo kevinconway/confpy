@@ -43,18 +43,23 @@ class ListOption(opt.Option):
         """Convert an iterable of literals to an iterable of options.
 
         Args:
-            values (iterable): An iterable of raw values to convert into
-                options.
+            values (iterable or string): An iterable of raw values to convert
+            into options. If the value is a string is is assumed to be a
+            comma separated list and will be split before processing.
 
         Returns:
             iterable: An iterable of option values initialized with the raw
                 values from `values`.
 
         Raises:
-            TypeError: If `values` is not iterable.
+            TypeError: If `values` is not iterable or string.
             TypeError: If the underlying option raises a TypeError.
             ValueError: If the underlying option raises a ValueError.
         """
+        if isinstance(values, compat.basestring):
+
+            values = tuple(value.strip() for value in values.split(','))
+
         # Create a list of options to store each value.
         opt_iter = tuple(copy.deepcopy(self._option) for value in values)
         for opt_obj, val in compat.zip(opt_iter, values):

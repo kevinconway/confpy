@@ -7,13 +7,23 @@ from __future__ import unicode_literals
 
 import sys
 
-if sys.version_info[0] == 3 and sys.version_info[1] == 2:
+try:
 
-    raise ImportError(
-        "Example generator cannot be imported in Python 3.2.X."
-    )
+    import jinja2
 
-import jinja2
+except ImportError as exc:
+
+    raise exc
+
+except Exception as exc:
+
+    if sys.version_info[0] == 3 and sys.version_info[1] == 2:
+
+        raise ImportError(
+            "Example generator cannot be imported in Python 3.2.X."
+        )
+
+    raise exc
 
 
 ENV = jinja2.Environment(

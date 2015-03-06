@@ -7,6 +7,7 @@ from __future__ import unicode_literals
 
 from .core.config import Configuration
 from .core.namespace import Namespace
+from .core.namespace import AutoNamespace
 from .options.boolopt import BoolOption
 from .options.listopt import ListOption
 from .options.numopt import IntegerOption
@@ -19,6 +20,7 @@ from .parser import parse_options
 __all__ = (
     'Configuration',
     'Namespace',
+    'AutoNamespace',
     'BoolOption',
     'ListOption',
     'IntegerOption',

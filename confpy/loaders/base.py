@@ -16,9 +16,10 @@ class ConfigurationFile(object):
 
     """Base class for configuration file parsers."""
 
-    def __init__(self, path):
+    def __init__(self, path, strict=True):
         self._path = path
         self._content = None
+        self._strict = strict
 
     @property
     def path(self):
@@ -50,6 +51,10 @@ class ConfigurationFile(object):
 
             if not hasattr(conf, namespace):
 
+                if not self._strict:
+
+                    continue
+
                 raise exc.NamespaceNotRegistered(
                     "The namespace {0} is not registered.".format(namespace)
                 )
@@ -59,6 +64,10 @@ class ConfigurationFile(object):
             for item, value in compat.iteritems(self.items(namespace)):
 
                 if not hasattr(name, item):
+
+                    if not self._strict:
+
+                        continue
 
                     raise exc.OptionNotRegistered(
                         "The option {0} is not registered.".format(item)

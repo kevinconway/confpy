@@ -5,6 +5,7 @@ from __future__ import absolute_import
 from __future__ import print_function
 from __future__ import unicode_literals
 
+import copy
 import re
 
 from ..core import compat
@@ -90,3 +91,20 @@ class PatternOption(option.Option):
             )
 
         return value
+
+    def __deepcopy__(self, memo):
+        """Deep copy an PatternOption.
+
+        This implementation accounts for the regex in the class which cannot
+        be deep copied normally.
+        """
+        new_instance = type(self)(pattern=self._pattern)
+        for key, value in self.__dict__.items():
+
+            if key == '_re':
+
+                continue
+
+            new_instance.__dict__[key] = copy.deepcopy(value, memo)
+
+        return new_instance

@@ -8,14 +8,6 @@ with open('README.rst', 'r') as readmefile:
 
     README = readmefile.read()
 
-with open('requirements.txt', 'r') as reqfile:
-
-    REQUIREMENTS = reqfile.readlines()
-
-with open('LICENSE', 'r') as licensefile:
-
-    LICENSE = licensefile.readlines()
-
 setup(
     name='confpy',
     version='0.9.0',
@@ -24,9 +16,9 @@ setup(
     author="Kevin Conway",
     author_email="kevinjacobconway@gmail.com",
     long_description=README,
-    license=LICENSE,
+    license='MIT',
     packages=find_packages(exclude=['tests', 'build', 'dist', 'docs']),
-    requires=REQUIREMENTS,
+    install_requires=[],
     entry_points={
         'console_scripts': [
             'confpy-generate = confpy.cmd:generate_example',

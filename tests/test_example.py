@@ -7,12 +7,13 @@ from __future__ import unicode_literals
 
 import pytest
 
-example = pytest.importorskip("confpy.example")
 from confpy.core import config
 from confpy.core import namespace
 from confpy.options import boolopt
 from confpy.options import numopt
 from confpy.options import stropt
+
+example = pytest.importorskip("confpy.example")
 
 
 @pytest.fixture(scope="module")

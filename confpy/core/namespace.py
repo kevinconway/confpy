@@ -16,7 +16,7 @@ class Namespace(object):
     """A collection of configuration options."""
 
     def __init__(self, description=None, **options):
-        """Initalize the Namespace with options
+        """Initialize the Namespace with options
 
         Args:
             description (str, optional): A human readable description of what
@@ -224,10 +224,7 @@ class AutoNamespace(Namespace):
         # infinite recursion if it is used before the options dictionary is
         # created. Lookup up the attribute directly in the instance dictionary
         # here to avoid that scenario.
-        if (
-            "_options" not in self.__dict__
-            or "_generator" not in self.__dict__
-        ):
+        if "_options" not in self.__dict__ or "_generator" not in self.__dict__:
 
             raise AttributeError("Attribute {0} does not exist.".format(name))
 

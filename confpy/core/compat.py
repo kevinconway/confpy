@@ -64,3 +64,22 @@ def iteritems(dictionary):
         return dictionary.iteritems()
 
     return dictionary.items()
+
+
+try:
+
+    from ConfigParser import SafeConfigParser as _ConfigParser
+
+except ImportError:
+
+    from configparser import ConfigParser as _ConfigParser
+
+
+class ConfigParser(_ConfigParser, object):
+    """Compatibility shim for the deprecated readfp handling."""
+
+    def readfp(self, f):
+        """Add a check for read_file and use it if it exists."""
+        if hasattr(self, "read_file"):
+            return self.read_file(f)
+        return super(ConfigParser, self).readfp(f)

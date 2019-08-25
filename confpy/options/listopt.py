@@ -35,11 +35,8 @@ class ListOption(opt.Option):
             raise TypeError("Option must be an option type.")
 
         self._option = option
-        self._default = default
-
-        if default is not None:
-
-            self._value = self.coerce(default)
+        self._default = default if default is not None else ()
+        self._value = self.coerce(self._default)
 
     def coerce(self, values):
         """Convert an iterable of literals to an iterable of options.

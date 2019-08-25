@@ -44,3 +44,12 @@ def test_list_default():
     assert result[1] is False
     assert result[2] is True
     assert result[3] is False
+
+
+def test_list_default_none():
+    """Test that there is no exception when default is NOne."""
+    opt = listopt.ListOption(option=boolopt.BoolOption())
+
+    result = tuple(opt.__get__())
+    assert result is not None
+    assert iter(result)

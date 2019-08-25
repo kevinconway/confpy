@@ -1,5 +1,8 @@
-pep8
-pyflakes
+pycodestyle
+pyflakes==1.6.0; python_version in '2.7 3.2'
+pyflakes; python_version not in '2.7 3.2'
 pylint
-pytest
+pytest<3.0.0; python_version in '2.7 3.2'
+pytest; python_version not in '2.7 3.2'
 pyenchant
+Jinja2; python_version != '3.2'

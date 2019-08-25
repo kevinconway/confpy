@@ -21,7 +21,7 @@ def test_config_instance_namespace_setting():
 
 
 def test_config_subclasses_are_not_affected_by_parent():
-    """Test that Configuration subclasses to not recieve parent namespaces."""
+    """Test that Configuration subclasses to not receive parent namespaces."""
     ns = namespace.Namespace(description="modified")
 
     class TestConfiguration(config.Configuration):

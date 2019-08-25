@@ -64,7 +64,7 @@ def PythonFileNonStrict(conf_body_non_strict):
 
 
 def test_python_file_creates_config_objects(PythonFile):
-    """Test that execing Python files loads options."""
+    """Test that Python files loads options."""
     config.Configuration(
         test_python_loader=namespace.Namespace(
             test=boolopt.BoolOption(),
@@ -80,7 +80,7 @@ def test_python_file_creates_config_objects(PythonFile):
 
 
 def test_python_file_creates_config_objects_non_strict(PythonFileNonStrict):
-    """Test that execing Python files loads options."""
+    """Test that Python files loads options."""
     config.Configuration(
         test_python_loader_non_strict=namespace.Namespace(
             test=boolopt.BoolOption(), many=numopt.IntegerOption()

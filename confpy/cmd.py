@@ -21,22 +21,20 @@ def generate_example():
     based on those options.
     """
     cmd_args = sys.argv[1:]
-    parser = argparse.ArgumentParser(description='Confpy example generator.')
+    parser = argparse.ArgumentParser(description="Confpy example generator.")
     parser.add_argument(
-        '--module',
-        action='append',
-        help='A python module which should be imported.',
+        "--module",
+        action="append",
+        help="A python module which should be imported.",
     )
     parser.add_argument(
-        '--file',
-        action='append',
-        help='A python file which should be evaled.',
+        "--file", action="append", help="A python file which should be evaled."
     )
     parser.add_argument(
-        '--format',
-        default='JSON',
-        choices=('JSON', 'INI'),
-        help='The output format of the configuration file.',
+        "--format",
+        default="JSON",
+        choices=("JSON", "INI"),
+        help="The output format of the configuration file.",
     )
 
     args = parser.parse_args(cmd_args)

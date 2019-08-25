@@ -40,8 +40,8 @@ letter = a
 @pytest.fixture
 def IniFile(conf_body):
     """Return an IniFile class which has a fixture for the content property."""
-    class IniTestFile(ini.IniFile):
 
+    class IniTestFile(ini.IniFile):
         @property
         def content(self):
             return conf_body
@@ -52,8 +52,8 @@ def IniFile(conf_body):
 @pytest.fixture
 def IniFileNonStrict(conf_body_non_strict):
     """Return an IniFile class which has a fixture for the content property."""
-    class IniTestFile(ini.IniFile):
 
+    class IniTestFile(ini.IniFile):
         @property
         def content(self):
             return conf_body_non_strict
@@ -68,24 +68,23 @@ def test_ini_file_creates_config_objects(IniFile):
             test=boolopt.BoolOption(),
             many=numopt.IntegerOption(),
             letter=stropt.StringOption(),
-        ),
+        )
     )
-    generated_conf = IniFile(path='test').config
+    generated_conf = IniFile(path="test").config
 
     assert generated_conf.test_ini_loader.test is True
     assert generated_conf.test_ini_loader.many == 10
-    assert generated_conf.test_ini_loader.letter == 'a'
+    assert generated_conf.test_ini_loader.letter == "a"
 
 
 def test_ini_file_creates_config_objects_non_strict(IniFileNonStrict):
     """Test that parsing INI files loads options."""
     config.Configuration(
         test_ini_loader_non_strict=namespace.Namespace(
-            test=boolopt.BoolOption(),
-            many=numopt.IntegerOption(),
-        ),
+            test=boolopt.BoolOption(), many=numopt.IntegerOption()
+        )
     )
-    generated_conf = IniFileNonStrict(path='test', strict=False).config
+    generated_conf = IniFileNonStrict(path="test", strict=False).config
 
     assert generated_conf.test_ini_loader_non_strict.test is True
     assert generated_conf.test_ini_loader_non_strict.many == 10

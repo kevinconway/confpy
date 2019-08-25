@@ -26,9 +26,7 @@ except Exception as exc:
     raise exc
 
 
-ENV = jinja2.Environment(
-    loader=jinja2.PackageLoader('confpy', 'templates'),
-)
+ENV = jinja2.Environment(loader=jinja2.PackageLoader("confpy", "templates"))
 
 
 def generate_example_ini(config):
@@ -41,7 +39,7 @@ def generate_example_ini(config):
     Returns:
         str: The text of the example INI file.
     """
-    return generate_example(config, ext='INI')
+    return generate_example(config, ext="INI")
 
 
 def generate_example_json(config):
@@ -54,10 +52,10 @@ def generate_example_json(config):
     Returns:
         str: The text of the example JSON file.
     """
-    return generate_example(config, ext='JSON')
+    return generate_example(config, ext="JSON")
 
 
-def generate_example(config, ext='json'):
+def generate_example(config, ext="json"):
     """Generate an example file based on the given Configuration object.
 
     Args:
@@ -68,6 +66,6 @@ def generate_example(config, ext='json'):
     Returns:
         str: The text of the example file.
     """
-    template_name = 'example.{0}'.format(ext.lower())
+    template_name = "example.{0}".format(ext.lower())
     template = ENV.get_template(template_name)
     return template.render(config=config)

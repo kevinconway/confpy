@@ -85,8 +85,7 @@ class PatternOption(option.Option):
 
             raise ValueError(
                 "The value {0} does not match the pattern {1}".format(
-                    value,
-                    self.pattern,
+                    value, self.pattern
                 )
             )
 
@@ -101,7 +100,7 @@ class PatternOption(option.Option):
         new_instance = type(self)(pattern=self._pattern)
         for key, value in self.__dict__.items():
 
-            if key == '_re':
+            if key == "_re":
 
                 continue
 

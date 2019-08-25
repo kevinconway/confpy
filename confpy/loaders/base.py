@@ -88,7 +88,7 @@ class ConfigurationFile(object):
 
     def _read(self):
         """Open the file and return its contents."""
-        with open(self.path, 'r') as file_handle:
+        with open(self.path, "r") as file_handle:
 
             content = file_handle.read()
 

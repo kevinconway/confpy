@@ -39,14 +39,13 @@ def configfile_from_path(path, strict=True):
     Raises:
         UnrecognizedFileExtension: If there is no loader for the path.
     """
-    extension = path.split('.')[-1]
+    extension = path.split(".")[-1]
     conf_type = FILE_TYPES.get(extension)
     if not conf_type:
 
         raise exc.UnrecognizedFileExtension(
             "Cannot parse file of type {0}. Choices are {1}.".format(
-                extension,
-                FILE_TYPES.keys(),
+                extension, FILE_TYPES.keys()
             )
         )
 
@@ -78,7 +77,7 @@ def configuration_from_paths(paths, strict=True):
     return cfg
 
 
-def set_environment_var_options(config, env=None, prefix='CONFPY'):
+def set_environment_var_options(config, env=None, prefix="CONFPY"):
     """Set any configuration options which have an environment var set.
 
     Args:
@@ -104,10 +103,8 @@ def set_environment_var_options(config, env=None, prefix='CONFPY'):
 
         for option_name, _ in section:
 
-            var_name = '{0}_{1}_{2}'.format(
-                prefix.upper(),
-                section_name.upper(),
-                option_name.upper(),
+            var_name = "{0}_{1}_{2}".format(
+                prefix.upper(), section_name.upper(), option_name.upper()
             )
             env_var = env.get(var_name)
             if env_var:
@@ -142,11 +139,10 @@ def set_cli_options(config, arguments=None):
 
         for option_name, _ in section:
 
-            var_name = '{0}_{1}'.format(
-                section_name.lower(),
-                option_name.lower(),
+            var_name = "{0}_{1}".format(
+                section_name.lower(), option_name.lower()
             )
-            parser.add_argument('--{0}'.format(var_name))
+            parser.add_argument("--{0}".format(var_name))
 
     args, _ = parser.parse_known_args(arguments)
     args = vars(args)
@@ -154,9 +150,8 @@ def set_cli_options(config, arguments=None):
 
         for option_name, _ in section:
 
-            var_name = '{0}_{1}'.format(
-                section_name.lower(),
-                option_name.lower(),
+            var_name = "{0}_{1}".format(
+                section_name.lower(), option_name.lower()
             )
             value = args.get(var_name)
             if value:
@@ -188,15 +183,14 @@ def check_for_missing_options(config):
 
                 raise exc.MissingRequiredOption(
                     "Option {0} in namespace {1} is required.".format(
-                        option_name,
-                        section_name,
+                        option_name, section_name
                     )
                 )
 
     return config
 
 
-def parse_options(files, env_prefix='CONFPY', strict=True):
+def parse_options(files, env_prefix="CONFPY", strict=True):
     """Parse configuration options and return a configuration object.
 
     Args:
@@ -221,11 +215,8 @@ def parse_options(files, env_prefix='CONFPY', strict=True):
     return check_for_missing_options(
         config=set_cli_options(
             config=set_environment_var_options(
-                config=configuration_from_paths(
-                    paths=files,
-                    strict=strict,
-                ),
+                config=configuration_from_paths(paths=files, strict=strict),
                 prefix=env_prefix,
-            ),
+            )
         )
     )

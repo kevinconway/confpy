@@ -16,7 +16,7 @@ except ImportError:
 import itertools
 
 
-if hasattr(builtins, 'xrange'):
+if hasattr(builtins, "xrange"):
 
     range = builtins.xrange
 
@@ -24,7 +24,7 @@ else:
 
     range = builtins.range
 
-if not hasattr(builtins, 'unicode'):
+if not hasattr(builtins, "unicode"):
 
     unicode = builtins.str
 
@@ -32,7 +32,7 @@ else:
 
     unicode = builtins.unicode
 
-if not hasattr(builtins, 'basestring'):
+if not hasattr(builtins, "basestring"):
 
     basestring = unicode
 
@@ -40,7 +40,7 @@ else:
 
     basestring = builtins.basestring
 
-if not hasattr(builtins, 'long'):
+if not hasattr(builtins, "long"):
 
     long = builtins.int
 
@@ -48,7 +48,7 @@ else:
 
     long = builtins.long
 
-if hasattr(itertools, 'izip'):
+if hasattr(itertools, "izip"):
 
     zip = itertools.izip
 
@@ -59,7 +59,7 @@ else:
 
 def iteritems(dictionary):
     """Replacement to account for iteritems/items switch in Py3."""
-    if hasattr(dictionary, 'iteritems'):
+    if hasattr(dictionary, "iteritems"):
 
         return dictionary.iteritems()
 

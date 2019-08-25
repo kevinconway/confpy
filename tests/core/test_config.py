@@ -14,9 +14,7 @@ from confpy.core import namespace
 def test_config_instance_namespace_setting():
     """Test that namespaces are bound to a config on init."""
     ns = namespace.Namespace(description="test")
-    conf = config.Configuration(
-        test=ns,
-    )
+    conf = config.Configuration(test=ns)
 
     assert conf.test is ns
     assert conf.test.description == "test"
@@ -29,9 +27,7 @@ def test_config_subclasses_are_not_affected_by_parent():
     class TestConfiguration(config.Configuration):
         _NAMESPACES = {}
 
-    parent = config.Configuration(
-        modified=ns,
-    )
+    parent = config.Configuration(modified=ns)
     child = TestConfiguration()
 
     assert parent.modified is ns

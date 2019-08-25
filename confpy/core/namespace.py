@@ -6,6 +6,7 @@ from __future__ import print_function
 from __future__ import unicode_literals
 
 from . import compat
+
 # Renaming option to opt to allow option as a variable name.
 from . import option as opt
 
@@ -131,7 +132,7 @@ class Namespace(object):
         # The options dictionary may not be set yet if this is getting called
         # from the init method. Check for the attribute before accessing it to
         # avoid infinite recursion.
-        if hasattr(self, '_options') and name in self._options:
+        if hasattr(self, "_options") and name in self._options:
 
             return self.set(name, value)
 
@@ -143,7 +144,7 @@ class Namespace(object):
         # infinite recursion if it is used before the options dictionary is
         # created. Lookup up the attribute directly in the instance dictionary
         # here to avoid that scenario.
-        if '_options' not in self.__dict__ or name not in self._options:
+        if "_options" not in self.__dict__ or name not in self._options:
 
             raise AttributeError("Option {0} does not exist.".format(name))
 
@@ -211,7 +212,7 @@ class AutoNamespace(Namespace):
         # The options dictionary may not be set yet if this is getting called
         # from the init method. Check for the attribute before accessing it to
         # avoid infinite recursion.
-        if hasattr(self, '_options') and hasattr(self, '_generator'):
+        if hasattr(self, "_options") and hasattr(self, "_generator"):
 
             return self.set(name, value)
 
@@ -224,8 +225,8 @@ class AutoNamespace(Namespace):
         # created. Lookup up the attribute directly in the instance dictionary
         # here to avoid that scenario.
         if (
-                '_options' not in self.__dict__ or
-                '_generator' not in self.__dict__
+            "_options" not in self.__dict__
+            or "_generator" not in self.__dict__
         ):
 
             raise AttributeError("Attribute {0} does not exist.".format(name))

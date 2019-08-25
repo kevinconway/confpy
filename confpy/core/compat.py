@@ -82,9 +82,9 @@ class ConfigParser(_ConfigParser, object):
     # pylint:disable=too-many-public-methods
     """Compatibility shim for the deprecated readfp handling."""
 
-    def read_file(self, f):
+    def read_file(self, file_):
         """Add a check for read_file and use it if it exists."""
         parent = super(ConfigParser, self)
         if hasattr(parent, "read_file"):
-            return parent.read_file(f)
-        return super(ConfigParser, self).readfp(f)
+            return parent.read_file(file_)
+        return super(ConfigParser, self).readfp(file_)

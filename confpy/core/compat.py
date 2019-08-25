@@ -75,7 +75,7 @@ except ImportError:
     from configparser import ConfigParser as _ConfigParser
 
 
-class ConfigParser(_ConfigParser, object):
+class ConfigParser(_ConfigParser, object):  # pylint:disable=too-many-ancestors
     """Compatibility shim for the deprecated readfp handling."""
 
     def readfp(self, f):

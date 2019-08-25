@@ -28,7 +28,7 @@ class IniFile(base.ConfigurationFile):
         if not self._parsed:
 
             self._parsed = ConfigParser()
-            self._parsed.readfp(io.StringIO(self.content))
+            self._parsed.read_file(io.StringIO(self.content))
 
         return self._parsed
 

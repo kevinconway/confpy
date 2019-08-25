@@ -78,8 +78,9 @@ except ImportError:
 class ConfigParser(_ConfigParser, object):  # pylint:disable=too-many-ancestors
     """Compatibility shim for the deprecated readfp handling."""
 
-    def readfp(self, f):
+    def read_file(self, f):
         """Add a check for read_file and use it if it exists."""
-        if hasattr(self, "read_file"):
-            return self.read_file(f)
+        parent = super(ConfigParser, self)
+        if hasattr(parent, "read_file"):
+            return parent.read_file(f)
         return super(ConfigParser, self).readfp(f)

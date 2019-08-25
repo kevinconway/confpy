@@ -5,6 +5,8 @@ from __future__ import absolute_import
 from __future__ import print_function
 from __future__ import unicode_literals
 
+# pylint: disable=maybe-no-member
+
 try:
 
     import __builtin__ as builtins
@@ -75,7 +77,9 @@ except ImportError:
     from configparser import ConfigParser as _ConfigParser
 
 
-class ConfigParser(_ConfigParser, object):  # pylint:disable=too-many-ancestors
+class ConfigParser(_ConfigParser, object):
+    # pylint:disable=too-many-ancestors
+    # pylint:disable=too-many-public-methods
     """Compatibility shim for the deprecated readfp handling."""
 
     def read_file(self, f):

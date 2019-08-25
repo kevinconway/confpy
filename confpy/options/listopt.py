@@ -8,6 +8,7 @@ from __future__ import unicode_literals
 import copy
 
 from ..core import compat
+
 # Renaming option to opt so option can be used as the initializer option below
 # without overwriting the imported name.
 from ..core import option as opt
@@ -34,11 +35,8 @@ class ListOption(opt.Option):
             raise TypeError("Option must be an option type.")
 
         self._option = option
-        self._default = default
-
-        if default is not None:
-
-            self._value = self.coerce(default)
+        self._default = default if default is not None else ()
+        self._value = self.coerce(self._default)
 
     def coerce(self, values):
         """Convert an iterable of literals to an iterable of options.
@@ -59,7 +57,7 @@ class ListOption(opt.Option):
         """
         if isinstance(values, compat.basestring):
 
-            values = tuple(value.strip() for value in values.split(','))
+            values = tuple(value.strip() for value in values.split(","))
 
         # Create a list of options to store each value.
         opt_iter = tuple(copy.deepcopy(self._option) for value in values)

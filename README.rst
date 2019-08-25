@@ -2,7 +2,19 @@
 confpy
 ======
 
-*Config file parsing and option management.*
+**Config file parsing and option management.**
+
+Project Status
+==============
+
+**Consider this project to be in maintenance mode.**
+
+I do not expect and am not entertaining new feature asks. I will still respond
+to PRs and issues that address bugs or security issues. Please send these to
+https://github.com/kevinconway/confpy.
+
+I continue to maintain this library because it is used in
+https://github.com/kevinconway/rpmvenv.
 
 Defining Configuration Options
 ==============================
@@ -244,10 +256,15 @@ maintain this organization when adding new tests.
 
 This repository comes with a tox.ini file which is configured to run a fairly
 exhaustive set of tests. All the current unit tests run, and pass, under Python
-2.6, 2.7, 3.2, 3.3, and 3.4 interpreters. Running the default tox command will
-attempt to run the tests in all these environments. In addition, tox is also
-configured to run PEP8, PyFlakes, and PyLint checks. The PyLint checks will
-make use of the .pylintrc file also included in this repository.
+2.6, 2.7, 3.2, 3.3, 3.4, 3.5, 3.6, and 3.7 interpreters. Running the default tox
+command will attempt to run the tests in all these environments. In addition,
+tox is also configured to run PEP8, PyFlakes, and PyLint checks. The PyLint
+checks will make use of the .pylintrc file also included in this repository.
+
+Note that testing for legacy and unsupported Python versions is done on a best
+effort basis. As time passes it becomes more and more difficult to both find
+a CI provider who will support old Python versions and to determine the
+compatible versions of all the test dependencies of the project.
 
 License
 =======

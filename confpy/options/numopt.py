@@ -26,7 +26,7 @@ class IntegerOption(option.Option):
         Returns:
             int: The integer value represented.
         """
-        if isinstance(value, int) or isinstance(value, compat.long):
+        if isinstance(value, (compat.long, int)):
 
             return value
 

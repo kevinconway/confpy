@@ -1,5 +1,28 @@
-pep8
-pyflakes
-pylint
-pytest
+# These appear to work for all version of python
+pycodestyle
 pyenchant
+
+# Legacy python versions were all dropped at the 2.0 release which
+# was right after 1.6.0.
+pyflakes==1.6.0; python_version in '2.6 2.7 3.2 3.3'
+pyflakes; python_version not in '2.6 2.7 3.2 3.3'
+
+# Pylint support is complicated. Different versions of Python
+# had support removed at different times. Python 3.4 will likely
+# be dropped in the near future and also require a one-off here.
+pylint==1.3; python_version in '2.6 3.2'
+    # Transitive dependencies for pylint also need legacy pins for 3.2.
+    logilab-common==0.62; python_version in '2.6 3.2'
+    astroid==1.2; python_version in '2.6 3.2'
+    isort==4.2.11; python_version in '2.6'
+pylint==1.9; python_version in '2.7 3.3'
+pylint; python_version not in '2.6 2.7 3.2 3.3'
+
+# Pytest dropped legacy support at the 3.0.0 release.
+pytest<3.0.0; python_version in '2.6 2.7 3.2'
+pytest; python_version not in '2.6 2.7 3.2'
+
+# Jinja2 seems to work everywhere right now other than 3.2.
+# This filter means the example generation tests will not run
+# when evaluated under 3.2.
+Jinja2; python_version != '3.2'

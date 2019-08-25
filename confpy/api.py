@@ -18,14 +18,14 @@ from .parser import parse_options
 
 
 __all__ = (
-    'Configuration',
-    'Namespace',
-    'AutoNamespace',
-    'BoolOption',
-    'ListOption',
-    'IntegerOption',
-    'FloatOption',
-    'StringOption',
-    'PatternOption',
-    'parse_options',
+    "Configuration",
+    "Namespace",
+    "AutoNamespace",
+    "BoolOption",
+    "ListOption",
+    "IntegerOption",
+    "FloatOption",
+    "StringOption",
+    "PatternOption",
+    "parse_options",
 )

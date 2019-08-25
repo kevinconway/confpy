@@ -52,3 +52,12 @@ docs/_build/
 
 # PyBuilder
 target/
+
+# MyPy
+.mypy_cache/
+
+# VSCode
+.vscode
+
+# Pytest
+.pytest_cache

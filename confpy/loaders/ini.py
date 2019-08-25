@@ -5,17 +5,10 @@ from __future__ import absolute_import
 from __future__ import print_function
 from __future__ import unicode_literals
 
-try:
-
-    from ConfigParser import SafeConfigParser as ConfigParser
-
-except ImportError:
-
-    from configparser import ConfigParser
-
 import io
 
 from . import base
+from ..core.compat import ConfigParser
 
 
 class IniFile(base.ConfigurationFile):
@@ -35,7 +28,7 @@ class IniFile(base.ConfigurationFile):
         if not self._parsed:
 
             self._parsed = ConfigParser()
-            self._parsed.readfp(io.StringIO(self.content))
+            self._parsed.read_file(io.StringIO(self.content))
 
         return self._parsed
 

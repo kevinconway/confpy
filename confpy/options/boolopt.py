@@ -32,16 +32,16 @@ class BoolOption(option.Option):
 
             return value
 
-        if not hasattr(value, 'lower'):
+        if not hasattr(value, "lower"):
 
-            raise TypeError('Value is not bool or string.')
+            raise TypeError("Value is not bool or string.")
 
-        if value.lower() in ('yes', 'true', '1'):
+        if value.lower() in ("yes", "true", "1"):
 
             return True
 
-        if value.lower() in ('no', 'false', '0'):
+        if value.lower() in ("no", "false", "0"):
 
             return False
 
-        raise ValueError('Could not coerce {0} to a bool.'.format(value))
+        raise ValueError("Could not coerce {0} to a bool.".format(value))

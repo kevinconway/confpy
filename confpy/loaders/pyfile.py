@@ -30,7 +30,7 @@ class PythonFile(base.ConfigurationFile):
         """
         if not self._parsed:
 
-            self._parsed = compile(self.content, self.path, 'exec')
+            self._parsed = compile(self.content, self.path, "exec")
 
         return self._parsed
 

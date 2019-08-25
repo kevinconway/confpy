@@ -16,9 +16,9 @@ def test_integer_coerce():
 
     opt.__set__(None, 0)
     assert opt.__get__() == 0
-    opt.__set__(None, '1')
+    opt.__set__(None, "1")
     assert opt.__get__() == 1
-    opt.__set__(None, '10')
+    opt.__set__(None, "10")
     assert opt.__get__() == 10
 
 
@@ -28,7 +28,7 @@ def test_integer_coerce_fail():
 
     with pytest.raises(ValueError):
 
-        opt.__set__(None, 'notanumber')
+        opt.__set__(None, "notanumber")
 
 
 def test_float_coerce():
@@ -37,7 +37,7 @@ def test_float_coerce():
 
     opt.__set__(None, 0)
     assert opt.__get__() == 0.0
-    opt.__set__(None, '5.4')
+    opt.__set__(None, "5.4")
     assert opt.__get__() == 5.4
 
 
@@ -47,4 +47,4 @@ def test_float_coerce_fail():
 
     with pytest.raises(ValueError):
 
-        opt.__set__(None, 'notanumber')
+        opt.__set__(None, "notanumber")
